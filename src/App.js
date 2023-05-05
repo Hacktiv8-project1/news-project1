@@ -3,7 +3,7 @@ import "./App.css";
 import HeaderComponent from "./components/HeaderComponent";
 import CovidPage from "./pages/CovidPage";
 import IndonesiaPage from "./pages/IndonesiaPage";
-import ProgrammingPage from "./pages/ProgrammingPage";
+import ProgramingPage from "./pages/ProgramingPage";
 import SavedPage from "./pages/SavedPage";
 
 function App() {
@@ -12,7 +12,7 @@ function App() {
       <HeaderComponent />
       <Routes>
         <Route path="/" element={<IndonesiaPage />}></Route>
-        <Route path="/programming" element={<ProgrammingPage />}></Route>
+        <Route path="/programming" element={<ProgramingPage />}></Route>
         <Route path="/covid19" element={<CovidPage />}></Route>
         <Route path="/saved" element={<SavedPage />}></Route>
       </Routes>
