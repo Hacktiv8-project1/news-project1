@@ -1,21 +1,28 @@
 import React, { useEffect, useState } from "react";
-import CardComponent from "../components/CardComponent";
 import axios from "axios";
+import { addCovNews, getAllCovNews } from "../features/news/covNewsSlice";
+import { useDispatch, useSelector } from "react-redux";
 
 function CovidPage() {
-  const [covidNews, setCovidNews] = useState([]);
-  const getCovidNews = async () => {
-    await axios
-      .get(
-        "https://newsapi.org/v2/everything?q=Covid&from=2023-04-05&sortBy=popularity&apiKey=16d7589cf0574ceb98d7827cebba4d32"
-      )
-      .then((response) => {
-        setCovidNews(response.data.articles);
-        console.log(response.data.articles);
-      });
-  };
+  const dispatch = useDispatch();
+  const covidNews = useSelector(getAllCovNews);
+  console.log(covidNews);
+
   useEffect(() => {
-    getCovidNews();
+    const getCovNews = async () => {
+      await axios
+        .get(
+          "https://newsapi.org/v2/everything?q=Covid&from=2023-04-11&sortBy=popularity&apiKey=16d7589cf0574ceb98d7827cebba4d32"
+        )
+        .then((response) => {
+          dispatch(addCovNews(response.data.articles));
+          // console.log(response.data.articles);
+        })
+        .catch((err) => {
+          console.log("Err:", err);
+        });
+    };
+    getCovNews();
   }, []);
   return (
     <div className="md:container md:mx-auto">
