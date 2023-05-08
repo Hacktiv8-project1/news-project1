@@ -1,22 +1,30 @@
 import React, { useEffect, useState } from "react";
-import CardComponent from "../components/CardComponent";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchIdNews, getAllIdNews } from "../features/news/idNewsSlice";
 import axios from "axios";
+import { add, getAllSaved } from "../features/saved/savedSlice";
 
 function IndonesiaPage() {
-  const [idNews, setIdNews] = useState([]);
-  const getIdNews = async () => {
-    await axios
-      .get(
-        "https://newsapi.org/v2/top-headlines?country=id&apiKey=16d7589cf0574ceb98d7827cebba4d32"
-      )
-      .then((response) => {
-        setIdNews(response.data.articles);
-        console.log(response.data.articles);
-      });
-  };
+  const dispatch = useDispatch();
+  const indNews = useSelector(getAllIdNews);
+  const saved = useSelector(getAllSaved);
+  const [isSaved, setIsSaved] = useState([]);
+
   useEffect(() => {
-    getIdNews();
-  }, []);
+    dispatch(fetchIdNews());
+  }, [dispatch, isSaved]);
+
+  const handleAdd = (indoNews) => {
+    dispatch(add(indoNews));
+    let index = saved.findIndex((x) => x === indoNews.title);
+    if (index >= 0) {
+      isSaved.splice(index, 1);
+    } else {
+      isSaved.push(indoNews.title);
+      setIsSaved([...isSaved]);
+    }
+  };
+
   return (
     <div className="md:container md:mx-auto">
       <div>
@@ -25,7 +33,7 @@ function IndonesiaPage() {
         </h1>
       </div>
       <div className="flex flex-wrap justify-between">
-        {idNews.map((indoNews, idx) => (
+        {indNews?.map((indoNews, idx) => (
           <div
             key={idx}
             className=" mb-6 max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
@@ -51,8 +59,31 @@ function IndonesiaPage() {
                   News Page
                 </a>
               </div>
+              {/* <div className="ml-[10px] mt-1">
+                <button onClick={() => handleAdd(indoNews)}>
+                  <i className="fa-xl items-center fa-regular fa-bookmark"></i>
+                </button>
+              </div> */}
+              {/* <div className="ml-[10px] mt-1">
+                  <button>
+                    <i
+                      onClick={() => handleAdd(indoNews,idx)}
+                      className={
+                        isActive
+                          ? "fa-xl text-yellow-400 items-center fa-solid fa-bookmark"
+                          : "fa-xl items-center fa-regular fa-bookmark"
+                      }
+                    ></i>
+                  </button>
+                </div>; */}
               <div className="ml-[10px] mt-1">
-                <i className="fa-xl items-center fa-regular fa-bookmark"></i>
+                <button onClick={() => handleAdd(indoNews)}>
+                  {isSaved.findIndex((x) => x === indoNews.title) >= 0 ? (
+                    <i className="fa-xl text-yellow-400 items-center fa-solid fa-bookmark"></i>
+                  ) : (
+                    <i className="fa-xl items-center fa-regular fa-bookmark"></i>
+                  )}
+                </button>
               </div>
             </div>
           </div>

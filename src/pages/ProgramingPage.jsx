@@ -1,22 +1,28 @@
-import React, { useEffect, useState } from 'react'
-import CardComponent from '../components/CardComponent';
+import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import { addProNews, getAllProNews } from "../features/news/proNewsSlice";
 
 function ProgramingPage() {
-    const [programingNews, setProgrammingNews] = useState([]);
-    const getProgramingNews = async () => {
+  const dispatch = useDispatch();
+  const programNews = useSelector(getAllProNews);
+
+  useEffect(() => {
+    const getProNews = async () => {
       await axios
         .get(
-          "https://newsapi.org/v2/everything?q=Progaming&from=2023-04-05&sortBy=popularity&apiKey=16d7589cf0574ceb98d7827cebba4d32"
+          "https://newsapi.org/v2/everything?q=Progaming&from=2023-04-11&sortBy=popularity&apiKey=16d7589cf0574ceb98d7827cebba4d32"
         )
         .then((response) => {
-          setProgrammingNews(response.data.articles);
-          console.log(response.data.articles);
+          dispatch(addProNews(response.data.articles));
+          // console.log(response.data.articles);
+        })
+        .catch((err) => {
+          console.log("Err:", err);
         });
     };
-    useEffect(() => {
-      getProgramingNews();
-    }, []);
+    getProNews();
+  }, []);
   return (
     <div className="md:container md:mx-auto">
       <div>
@@ -25,7 +31,7 @@ function ProgramingPage() {
         </h1>
       </div>
       <div className="flex flex-wrap justify-between">
-        {programingNews.map((proNews, idx) => (
+        {programNews.map((proNews, idx) => (
           <div
             key={idx}
             className=" mb-6 max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
@@ -62,4 +68,4 @@ function ProgramingPage() {
   );
 }
 
-export default ProgramingPage
+export default ProgramingPage;
