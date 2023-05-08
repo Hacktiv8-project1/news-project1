@@ -6,6 +6,7 @@ const ID_URL =
 
 const initialState = {
   idNews: [],
+  searchTerm: "",
 };
 
 export const fetchIdNews = createAsyncThunk("idNews/fetchIdNews", async () => {
@@ -20,6 +21,9 @@ export const idNewsSlice = createSlice({
     addIdNews: (state, { payload }) => {
       state.idNews = payload;
     },
+    setSearchTerm: (state, { payload }) => {
+      state.searchTerm = payload;
+    },
   },
   extraReducers: {
     [fetchIdNews.pending]: () => console.log("pending"),
@@ -31,6 +35,7 @@ export const idNewsSlice = createSlice({
   },
 });
 
-export const { addIdNews } = idNewsSlice.actions;
+export const { addIdNews, setSearchTerm } = idNewsSlice.actions;
 export const getAllIdNews = (state) => state.indNews.idNews;
+export const getSearchTerm = (state) => state.indNews.searchTerm;
 export default idNewsSlice.reducer;

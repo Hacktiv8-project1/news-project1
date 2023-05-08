@@ -9,6 +9,6 @@ export const store = configureStore({
     indNews: idNewsReducer,
     covidNews: covNewsReducer,
     programNews: proNewsReducer,
-    save : savedReducer
+    save: savedReducer,
   },
 });
