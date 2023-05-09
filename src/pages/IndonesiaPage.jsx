@@ -1,12 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchIdNews, getAllIdNews } from "../features/news/idNewsSlice";
-import axios from "axios";
+import {
+  fetchIdNews,
+  getAllIdNews,
+  getSearchTerm,
+} from "../features/news/idNewsSlice";
 import { add, getAllSaved } from "../features/saved/savedSlice";
 
 function IndonesiaPage() {
   const dispatch = useDispatch();
   const indNews = useSelector(getAllIdNews);
+  const saved = useSelector(getAllSaved);
+  const searchTerm = useSelector(getSearchTerm);
+
   const [isSaved, setIsSaved] = useState([]);
 
   useEffect(() => {
@@ -24,6 +30,10 @@ function IndonesiaPage() {
     }
   };
 
+  const filteredNews = indNews.filter((indoNews) =>
+    indoNews.title.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   return (
     <div className="md:container md:mx-auto">
       <div>
@@ -32,7 +42,7 @@ function IndonesiaPage() {
         </h1>
       </div>
       <div className="grid grid-cols-3 gap-4">
-        {indNews?.map((indoNews, idx) => (
+        {filteredNews?.map((indoNews, idx) => (
           <div
             key={idx}
             className=" mb-6 max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"

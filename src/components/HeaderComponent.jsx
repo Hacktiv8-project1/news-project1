@@ -1,7 +1,16 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { setSearchTerm } from "../features/news/idNewsSlice";
 
 function HeaderComponent() {
+  const dispatch = useDispatch();
+
+  const handleSearch = (e) => {
+    const searchTerm = e.target.value;
+    dispatch(setSearchTerm(searchTerm));
+  };
+
   return (
     <div>
       <nav className="bg-white border-gray-200 dark:bg-gray-900">
@@ -49,6 +58,7 @@ function HeaderComponent() {
               <input
                 type="text"
                 id="search-navbar"
+                onChange={handleSearch}
                 className="block w-full p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 placeholder="Search..."
               />
