@@ -5,6 +5,7 @@ import CovidPage from "./pages/CovidPage";
 import IndonesiaPage from "./pages/IndonesiaPage";
 import ProgramingPage from "./pages/ProgramingPage";
 import SavedPage from "./pages/SavedPage";
+import SearchPage from "./pages/SearchPage";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         <Route path="/programming" element={<ProgramingPage />}></Route>
         <Route path="/covid19" element={<CovidPage />}></Route>
         <Route path="/saved" element={<SavedPage />}></Route>
+        <Route path="/search/:query" element={<SearchPage />}></Route>
       </Routes>
     </BrowserRouter>
   );
