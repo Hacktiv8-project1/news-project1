@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   saved: localStorage.getItem("saved")
@@ -19,10 +19,10 @@ export const savedSlice = createSlice({
 
       if (existsItem >= 0) {
         // console.log("sudah ada")
-         let removeItem = state.saved?.filter(
-           (item) => item.title !== action.payload?.title
-         );
-         state.saved = removeItem;
+        let removeItem = state.saved?.filter(
+          (item) => item.title !== action.payload?.title
+        );
+        state.saved = removeItem;
         localStorage.setItem("saved", JSON.stringify(state.saved));
       } else {
         // add

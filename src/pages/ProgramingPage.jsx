@@ -1,28 +1,31 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchProNews, getAllProNews } from "../features/news/proNewsSlice";
-import { add } from "../features/saved/savedSlice";
+import { add, getAllSaved } from "../features/saved/savedSlice";
 
 function ProgramingPage() {
   const dispatch = useDispatch();
   const programNews = useSelector(getAllProNews);
+  const saved = useSelector(getAllSaved);
   const [isSaved, setIsSaved] = useState([]);
 
   useEffect(() => {
     dispatch(fetchProNews());
-  }, [dispatch, isSaved]);
+    setIsSaved(saved);
+  }, [dispatch, saved]);
 
   const handleAdd = (item) => {
     dispatch(add(item));
-    let index = isSaved.findIndex((x) => x === item.title);
+    let index = isSaved.findIndex((x) => x.title === item.title);
     if (index >= 0) {
-      isSaved.splice(index, 1);
+      let updatedSaved = isSaved.filter((x) => x.title !== item.title);
+      setIsSaved(updatedSaved);
     } else {
-      isSaved.push(item.title);
-      setIsSaved([...isSaved]);
+      let updatedSaved = [...isSaved, item];
+      setIsSaved(updatedSaved);
     }
   };
+
   return (
     <div className="md:container md:mx-auto">
       <div>
@@ -30,7 +33,7 @@ function ProgramingPage() {
           Programing News
         </h1>
       </div>
-      <div className="grid grid-cols-3 gap-4">
+      <div className="grid grid-cols-4 gap-5">
         {programNews.map((proNews, idx) => (
           <div
             key={idx}
@@ -59,7 +62,7 @@ function ProgramingPage() {
               </div>
               <div className="ml-[10px] mt-1">
                 <button onClick={() => handleAdd(proNews)}>
-                  {isSaved.findIndex((x) => x === proNews.title) >= 0 ? (
+                  {isSaved.findIndex((x) => x.title === proNews.title) >= 0 ? (
                     <i className="fa-xl text-yellow-400 items-center fa-solid fa-bookmark"></i>
                   ) : (
                     <i className="fa-xl items-center fa-regular fa-bookmark"></i>

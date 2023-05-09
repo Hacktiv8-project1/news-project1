@@ -12,16 +12,17 @@ function IndonesiaPage() {
 
   useEffect(() => {
     dispatch(fetchIdNews());
-  }, [dispatch, isSaved]);
+  }, [dispatch, saved]);
 
   const handleAdd = (item) => {
     dispatch(add(item));
-    let index = isSaved.findIndex((x) => x === item.title);
+    let index = isSaved.findIndex((x) => x.title === item.title);
     if (index >= 0) {
-      isSaved.splice(index, 1);
+      let updatedSaved = isSaved.filter((x) => x.title !== item.title);
+      setIsSaved(updatedSaved);
     } else {
-      isSaved.push(item.title);
-      setIsSaved([...isSaved]);
+      let updatedSaved = [...isSaved, item];
+      setIsSaved(updatedSaved);
     }
   };
 
@@ -61,7 +62,7 @@ function IndonesiaPage() {
               </div>
               <div className="ml-[10px] mt-1">
                 <button onClick={() => handleAdd(indoNews)}>
-                  {isSaved.findIndex((x) => x === indoNews.title) >= 0 ? (
+                  {isSaved.findIndex((x) => x.title === indoNews.title) >= 0 ? (
                     <i className="fa-xl text-yellow-400 items-center fa-solid fa-bookmark"></i>
                   ) : (
                     <i className="fa-xl items-center fa-regular fa-bookmark"></i>

@@ -18,21 +18,23 @@ function SearchPage() {
 
   useEffect(() => {
     dispatch(searchPending());
+    setIsSaved(saved);
     dispatch(fetchSearchResults(query))
       .then((response) => {
         dispatch(searchSuccess(response.payload));
       })
       .catch((error) => {});
-  }, [query, dispatch, isSaved]);
+  }, [query, dispatch, saved]);
 
   const handleAdd = (item) => {
     dispatch(add(item));
-    let index = isSaved.findIndex((x) => x === item.title);
+    let index = isSaved.findIndex((x) => x.title === item.title);
     if (index >= 0) {
-      isSaved.splice(index, 1);
+      let updatedSaved = isSaved.filter((x) => x.title !== item.title);
+      setIsSaved(updatedSaved);
     } else {
-      isSaved.push(item.title);
-      setIsSaved([...isSaved]);
+      let updatedSaved = [...isSaved, item];
+      setIsSaved(updatedSaved);
     }
   };
 
@@ -106,7 +108,7 @@ function SearchPage() {
               </div>
               <div className="ml-[10px] mt-1">
                 <button onClick={() => handleAdd(result)}>
-                  {isSaved.findIndex((x) => x === result.title) >= 0 ? (
+                  {isSaved.findIndex((x) => x.title === result.title) >= 0 ? (
                     <i className="fa-xl text-yellow-400 items-center fa-solid fa-bookmark"></i>
                   ) : (
                     <i className="fa-xl items-center fa-regular fa-bookmark"></i>
