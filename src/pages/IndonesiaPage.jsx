@@ -12,6 +12,7 @@ function IndonesiaPage() {
 
   useEffect(() => {
     dispatch(fetchIdNews());
+    setIsSaved(saved);
   }, [dispatch, saved]);
 
   const handleAdd = (item) => {
