@@ -7,20 +7,19 @@ import { add, getAllSaved } from "../features/saved/savedSlice";
 function IndonesiaPage() {
   const dispatch = useDispatch();
   const indNews = useSelector(getAllIdNews);
-  const saved = useSelector(getAllSaved);
   const [isSaved, setIsSaved] = useState([]);
 
   useEffect(() => {
     dispatch(fetchIdNews());
   }, [dispatch, isSaved]);
 
-  const handleAdd = (indoNews) => {
-    dispatch(add(indoNews));
-    let index = saved.findIndex((x) => x === indoNews.title);
+  const handleAdd = (item) => {
+    dispatch(add(item));
+    let index = isSaved.findIndex((x) => x === item.title);
     if (index >= 0) {
       isSaved.splice(index, 1);
     } else {
-      isSaved.push(indoNews.title);
+      isSaved.push(item.title);
       setIsSaved([...isSaved]);
     }
   };
@@ -32,7 +31,7 @@ function IndonesiaPage() {
           News
         </h1>
       </div>
-      <div className="flex flex-wrap justify-between">
+      <div className="grid grid-cols-3 gap-4">
         {indNews?.map((indoNews, idx) => (
           <div
             key={idx}
@@ -59,23 +58,6 @@ function IndonesiaPage() {
                   News Page
                 </a>
               </div>
-              {/* <div className="ml-[10px] mt-1">
-                <button onClick={() => handleAdd(indoNews)}>
-                  <i className="fa-xl items-center fa-regular fa-bookmark"></i>
-                </button>
-              </div> */}
-              {/* <div className="ml-[10px] mt-1">
-                  <button>
-                    <i
-                      onClick={() => handleAdd(indoNews,idx)}
-                      className={
-                        isActive
-                          ? "fa-xl text-yellow-400 items-center fa-solid fa-bookmark"
-                          : "fa-xl items-center fa-regular fa-bookmark"
-                      }
-                    ></i>
-                  </button>
-                </div>; */}
               <div className="ml-[10px] mt-1">
                 <button onClick={() => handleAdd(indoNews)}>
                   {isSaved.findIndex((x) => x === indoNews.title) >= 0 ? (
