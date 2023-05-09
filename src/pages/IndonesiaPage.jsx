@@ -19,13 +19,13 @@ function IndonesiaPage() {
     dispatch(fetchIdNews());
   }, [dispatch, isSaved]);
 
-  const handleAdd = (indoNews) => {
-    dispatch(add(indoNews));
-    let index = saved.findIndex((x) => x === indoNews.title);
+  const handleAdd = (item) => {
+    dispatch(add(item));
+    let index = isSaved.findIndex((x) => x === item.title);
     if (index >= 0) {
       isSaved.splice(index, 1);
     } else {
-      isSaved.push(indoNews.title);
+      isSaved.push(item.title);
       setIsSaved([...isSaved]);
     }
   };
@@ -41,7 +41,7 @@ function IndonesiaPage() {
           News
         </h1>
       </div>
-      <div className="flex flex-wrap justify-between">
+      <div className="grid grid-cols-3 gap-4">
         {filteredNews?.map((indoNews, idx) => (
           <div
             key={idx}

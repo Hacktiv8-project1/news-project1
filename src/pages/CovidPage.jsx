@@ -1,29 +1,28 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { addCovNews, getAllCovNews } from "../features/news/covNewsSlice";
+import { fetchCovNews, getAllCovNews } from "../features/news/covNewsSlice";
 import { useDispatch, useSelector } from "react-redux";
+import { add } from "../features/saved/savedSlice";
 
 function CovidPage() {
   const dispatch = useDispatch();
   const covidNews = useSelector(getAllCovNews);
-  console.log(covidNews);
+  const [isSaved, setIsSaved] = useState([]);
 
   useEffect(() => {
-    const getCovNews = async () => {
-      await axios
-        .get(
-          "https://newsapi.org/v2/everything?q=Covid&from=2023-04-11&sortBy=popularity&apiKey=16d7589cf0574ceb98d7827cebba4d32"
-        )
-        .then((response) => {
-          dispatch(addCovNews(response.data.articles));
-          // console.log(response.data.articles);
-        })
-        .catch((err) => {
-          console.log("Err:", err);
-        });
-    };
-    getCovNews();
-  }, []);
+    dispatch(fetchCovNews());
+  }, [dispatch, isSaved]);
+
+  const handleAdd = (item) => {
+    dispatch(add(item));
+    let index = isSaved.findIndex((x) => x === item.title);
+    if (index >= 0) {
+      isSaved.splice(index, 1);
+    } else {
+      isSaved.push(item.title);
+      setIsSaved([...isSaved]);
+    }
+  };
   return (
     <div className="md:container md:mx-auto">
       <div>
@@ -31,7 +30,7 @@ function CovidPage() {
           Covid-19 News
         </h1>
       </div>
-      <div className="flex flex-wrap justify-between">
+      <div className="grid grid-cols-3 gap-4">
         {covidNews.map((covNews, idx) => (
           <div
             key={idx}
@@ -59,7 +58,13 @@ function CovidPage() {
                 </a>
               </div>
               <div className="ml-[10px] mt-1">
-                <i className="fa-xl items-center fa-regular fa-bookmark"></i>
+                <button onClick={() => handleAdd(covNews)}>
+                  {isSaved.findIndex((x) => x === covNews.title) >= 0 ? (
+                    <i className="fa-xl text-yellow-400 items-center fa-solid fa-bookmark"></i>
+                  ) : (
+                    <i className="fa-xl items-center fa-regular fa-bookmark"></i>
+                  )}
+                </button>
               </div>
             </div>
           </div>
