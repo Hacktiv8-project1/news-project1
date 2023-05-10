@@ -1,22 +1,30 @@
-import React, { useEffect, useState } from 'react'
-import CardComponent from '../components/CardComponent';
-import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchProNews, getAllProNews } from "../features/news/proNewsSlice";
+import { saveNews } from "../features/saved/savedSlice";
+import { SaveButton } from "../components/SaveButton";
+import { NewsPageButton } from "../components/NewsPageButton";
+
 
 function ProgramingPage() {
-    const [programingNews, setProgrammingNews] = useState([]);
-    const getProgramingNews = async () => {
-      await axios
-        .get(
-          "https://newsapi.org/v2/everything?q=Progaming&from=2023-04-05&sortBy=popularity&apiKey=16d7589cf0574ceb98d7827cebba4d32"
-        )
-        .then((response) => {
-          setProgrammingNews(response.data.articles);
-          console.log(response.data.articles);
-        });
-    };
-    useEffect(() => {
-      getProgramingNews();
-    }, []);
+  const dispatch = useDispatch();
+  const programNews = useSelector(getAllProNews);
+  const [isSaved, setIsSaved] = useState([]);
+
+  useEffect(() => {
+    dispatch(fetchProNews());
+  }, [dispatch, isSaved]);
+
+  const handleAdd = (item) => {
+    dispatch(saveNews(item));
+    let index = isSaved.findIndex((x) => x === item.title);
+    if (index >= 0) {
+      isSaved.splice(index, 1);
+    } else {
+      isSaved.push(item.title);
+      setIsSaved([...isSaved]);
+    }
+  };
   return (
     <div className="md:container md:mx-auto">
       <div>
@@ -24,8 +32,8 @@ function ProgramingPage() {
           Programing News
         </h1>
       </div>
-      <div className="flex flex-wrap justify-between">
-        {programingNews.map((proNews, idx) => (
+      <div className="grid grid-cols-3 gap-4">
+        {programNews.map((proNews, idx) => (
           <div
             key={idx}
             className=" mb-6 max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
@@ -43,16 +51,9 @@ function ProgramingPage() {
               {proNews.description}
             </p>
             <div className="flex justify-end">
-              <div>
-                <a
-                  href={proNews.url}
-                  className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                >
-                  News Page
-                </a>
-              </div>
+            <NewsPageButton url={proNews.url}/> 
               <div className="ml-[10px] mt-1">
-                <i className="fa-xl items-center fa-regular fa-bookmark"></i>
+                <SaveButton keepNews={proNews} />
               </div>
             </div>
           </div>
@@ -62,4 +63,4 @@ function ProgramingPage() {
   );
 }
 
-export default ProgramingPage
+export default ProgramingPage;
