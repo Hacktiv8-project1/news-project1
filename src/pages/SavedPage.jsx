@@ -1,6 +1,5 @@
-import React from "react";
-import { useDispatch, useSelector } from "react-redux";
-import TableComponent from "../components/TableComponent";
+
+import { useSelector } from "react-redux";
 
 function SavedPage() {
   const saved = useSelector((store)=>store.save.saved);
