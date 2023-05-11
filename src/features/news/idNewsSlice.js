@@ -1,7 +1,8 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
+import API_KEY from "../api/api";
 
-const ID_URL = `https://newsapi.org/v2/top-headlines?country=id&apiKey=${process.env.REACT_APP_API_KEY}`;
+const ID_URL = `https://newsapi.org/v2/top-headlines?country=id&apiKey=${API_KEY}`;
 
 const initialState = {
   idNews: [],
@@ -15,18 +16,14 @@ export const fetchIdNews = createAsyncThunk("idNews/fetchIdNews", async () => {
 export const idNewsSlice = createSlice({
   name: "idNews",
   initialState,
-  reducers: {
-    addIdNews: (state, { payload }) => {
-      state.idNews = payload;
-    },
-  },
+  reducers: {},
   extraReducers: {
     [fetchIdNews.pending]: () => console.log("pending"),
     [fetchIdNews.fulfilled]: (state, { payload }) => {
       console.log("fetch successfully");
       return { ...state, idNews: payload };
     },
-    [fetchIdNews.rejected]: () => console.log("pending"),
+    [fetchIdNews.rejected]: () => console.log("rejected"),
   },
 });
 

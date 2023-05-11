@@ -1,17 +1,6 @@
 import React, { useEffect, useState } from "react";
 
 function CardComponent() {
-  // const [idNews, setIdNews] = useState([]);
-  // useEffect(() => {
-  //   getIdNews()
-  //     .then((res) => setIdNews(res))
-  //     .catch(
-  //       // console.log(
-  //       //   er.response.data.message ? er.response.data.message : er.response.data
-  //       // )
-  //     );
-  // }, []);
-
   return (
     <div>
         <div
