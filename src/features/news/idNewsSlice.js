@@ -1,6 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-import API_KEY from "../api/api";
 
 const ID_URL = `https://newsapi.org/v2/top-headlines?country=id&apiKey=${API_KEY}`;
 
