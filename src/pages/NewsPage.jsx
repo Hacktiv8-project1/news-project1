@@ -23,19 +23,22 @@ function NewsPage({setOfNews}) {
       case '/':
         dispatch(fetchIdNews());
         setNewsPageTitle('News')
+    
         break
         case '/programming':
           dispatch(fetchProNews());
           setNewsPageTitle('Programming News')
+      
         break
         case '/covid19':
           dispatch(fetchCovNews());
           setNewsPageTitle('COVID-19 News')
+          
         break
       default:break
     }
    
-  }, [pathname]);
+  }, [dispatch,pathname]);
 
 
   return (
@@ -45,11 +48,11 @@ function NewsPage({setOfNews}) {
           {newsPagesTitle}
         </h1>
         </div>
-        <div className="grid grid-cols-3 gap-4">
+        <div className="grid  grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 ">
           {setOfNews?.map((News, idx) => (
             <div
               key={idx}
-              className=" mb-6 max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
+              className=" mb-6  p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 boder-4 "
             >
             <h5 className="mb-3 font-normal text-gray-500 dark:text-gray-400">
               {News.source.name}
@@ -64,11 +67,11 @@ function NewsPage({setOfNews}) {
              {News.description}
             </p>
             <div className="flex justify-end">
-                <NewsPageButton url={News.url}/> 
+                <NewsPageButton url={News.url}>News Page </NewsPageButton>
                 <div className="ml-[10px] mt-1">
                 <SaveButton keepNews={News} />
                 </div>
-              </div>
+            </div>
           </div>
           ))}
         </div>

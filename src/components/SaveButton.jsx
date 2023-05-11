@@ -1,21 +1,25 @@
-import {useState} from 'react'
+import {useEffect, useState} from 'react'
 import { useDispatch,useSelector } from 'react-redux'
 import { saveNews,unSaveNews } from '../features/saved/savedSlice'
 
 
 export function SaveButton ({keepNews}) {
    const dispatch = useDispatch()
-   
+   const [isSaved,setisSaved] = useState(true)
    const saved = useSelector((store)=>store.save.saved)
-   const keep = saved.findIndex((x)=>x.title === keepNews.title) 
    
-   const [isSaved,setisSaved] = useState(keep>=0)
+   useEffect(()=>{
+      const keep = saved.findIndex((x)=>x.title === keepNews.title) 
+      
+      const initialIsSaved= keep !==-1
+      setisSaved(initialIsSaved)
+   },[keepNews.title])
    
    
    // 
 
    const handleActionSave=(keepNews)=>{
-      if(keep >= 0){
+      if(isSaved){
          dispatch(unSaveNews(keepNews))
          setisSaved(!isSaved)
       }else{
