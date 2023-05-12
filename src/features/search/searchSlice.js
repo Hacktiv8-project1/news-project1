@@ -27,8 +27,8 @@ export const fetchSearchResults = createAsyncThunk(
   "search/fetchSearchResults",
   async (query) => {
     const response = await axios.get(
-      // `https://newsapi.org/v2/everything?q=${query}&apiKey=${process.env.REACT_APP_API_KEY}`
-      `https://newsapi.org/v2/everything?q=${query}&apiKey=c27b1dc48f0c4735b6cad3758ea63b36`
+      `https://newsapi.org/v2/everything?q=${query}&apiKey=${process.env.REACT_APP_API_KEY}`
+      // `https://newsapi.org/v2/everything?q=${query}&apiKey=c27b1dc48f0c4735b6cad3758ea63b36`
     );
     return response.data.articles;
   }
