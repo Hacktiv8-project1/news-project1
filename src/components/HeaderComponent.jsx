@@ -1,4 +1,4 @@
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { fetchSearchResults } from "../features/search/searchSlice";
@@ -9,27 +9,38 @@ function HeaderComponent() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const [isOpen,setIsOpen]= useState(false)
-
+  
   const handleSearch = (event) => {
     event.preventDefault();
-
     dispatch(fetchSearchResults(query));
-
     navigate(`/search/${query}`);
   };
+  
+  
+  const [isOpen,setIsOpen]= useState(false)
+  const [viewportWidth, setViewportWidth] = useState(window.innerWidth);
 
-  // const handleMenuAction=(event)=>{
-  //   setIsOpen(!isOpen)
-  // }
+  useEffect(() => {
+    const handleResize = () => {
+      setViewportWidth(window.innerWidth);
+    };
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, [window.innerWidth]);
+
+  const handleMenuAction=()=>{
+    setIsOpen(!isOpen)
+  }
+
+
   return (
     <div>
       <nav className="bg-white border-gray-200 dark:bg-gray-900">
         <div className="max-w-screen-xl flex flex-wrap justify-between mx-auto p-4">
 
           <div className="flex justify-between w-full md:w-max md:order-2 ">
-            
-            
+          {/* search bar */}
             <form onSubmit={handleSearch}>
               <div className="flex justify-center space-x-3  ">
                 <input
@@ -48,42 +59,29 @@ function HeaderComponent() {
                 </button>
               </div>
             </form>
-
-
-
+          {/* humburger menu button */}
             <button
-              // onClick={handleMenuAction}
+              onClick={handleMenuAction}
               className=" inline-flex  p-2 text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600 "
             >
-             
-              <svg
-                className="w-6 h-6"
-                aria-hidden="true"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z"
-                  clipRule="evenodd"
-                ></path>
-              </svg>
+             {isOpen&&viewportWidth<=767.33?
+              <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g clip-path="url(#clip0_429_11066)"> <path d="M3 6.00092H21M3 12.0009H21M3 18.0009H21" stroke="#6b7280" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></path> </g> <defs> <clipPath id="clip0_429_11066"> <rect width="24" height="24" fill="white" transform="translate(0 0.000915527)"></rect> </clipPath> </defs> </g></svg>:
+               <svg  className="w-6 h-6" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" fill="#000000" stroke="#000000" stroke-width="0.01024"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" stroke="#CCCCCC" stroke-width="28.672000000000004"></g><g id="SVGRepo_iconCarrier"><path fill="#6b7280" d="M195.2 195.2a64 64 0 0 1 90.496 0L512 421.504 738.304 195.2a64 64 0 0 1 90.496 90.496L602.496 512 828.8 738.304a64 64 0 0 1-90.496 90.496L512 602.496 285.696 828.8a64 64 0 0 1-90.496-90.496L421.504 512 195.2 285.696a64 64 0 0 1 0-90.496z"></path></g></svg>
+            }
+            
             </button>
           </div>
 
 
-          {/* <div
-            className="w-full md:flex md:justify-between md:w-auto md:order-1"
-          > */}
-           <div
-            className="items-center justify-between hidden w-full md:flex md:w-auto md:order-1"
+
+
           
+          <div
+            className="w-full md:flex md:justify-between md:w-auto md:order-1"
           >
           
             <ul 
-             className="flex flex-col p-4 md:p-0 mt-4 font-medium border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700"
-            //  className={isOpen?"hidden bg-slate-600 items-center flex-col justify-evenly  p-4 font-medium  rounded-lg md:space-y-0 md:p-0 md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700":" items-center flex flex-col justify-evenly  p-4 font-medium  rounded-lg bg-gray-50 md:space-y-0 md:p-0 md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700"}
+             className={isOpen&&viewportWidth<=767.33?"hidden items-center flex-col justify-evenly  p-4 font-medium  rounded-lg ":"border-2 border-gray-300 mt-2 items-center flex flex-col justify-evenly  p-4 font-medium  rounded-lg md:space-y-0 md:p-0 md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700 "}
             >
               <NavLink
                 to="/"
@@ -125,11 +123,9 @@ function HeaderComponent() {
               >
                 Saved
               </NavLink>
+              
             </ul>
-
           </div>
-
-
         </div>
       </nav>
     </div>

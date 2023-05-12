@@ -1,8 +1,8 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
-// const PRO_URL = `https://newsapi.org/v2/everything?q=Progaming&from=2023-04-11&sortBy=popularity&apiKey=${process.env.REACT_APP_API_KEY}`;
-const PRO_URL = `https://newsapi.org/v2/everything?q=Progaming&from=2023-04-11&sortBy=popularity&apiKey=c27b1dc48f0c4735b6cad3758ea63b36`;
+const PRO_URL =
+  "https://newsapi.org/v2/everything?q=Progaming&from=2023-04-11&sortBy=popularity&apiKey=c27b1dc48f0c4735b6cad3758ea63b36";
 
 const initialState = {
   proNews: [],
@@ -19,13 +19,12 @@ export const fetchProNews = createAsyncThunk(
 export const proNewsSlice = createSlice({
   name: "proNews",
   initialState,
-
-  extraReducers: {
-    [fetchProNews.pending]: () => console.log("pending"),
-    [fetchProNews.fulfilled]: (state, { payload }) => {
-      return { ...state, proNews: payload };
-    },
-    [fetchProNews.rejected]: () => console.log("pending"),
+  extraReducers: (builder) => {
+    builder.addCase(fetchProNews.pending);
+    builder.addCase(fetchProNews.fulfilled, (state, { payload }) => {
+      state.proNews = payload;
+    });
+    builder.addCase(fetchProNews.rejected);
   },
 });
 
