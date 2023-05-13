@@ -1,6 +1,17 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
+export const fetchSearchResults = createAsyncThunk(
+  "search/fetchSearchResults",
+  async (query) => {
+    const response = await axios.get(
+      // `https://newsapi.org/v2/everything?q=${query}&apiKey=5af2188c4b8e4985a3fe7dbde2b3b6be`
+      `https://newsapi.org/v2/everything?q=${query}&apiKey=${process.env.REACT_APP_API_KEY}`
+    );
+    return response.data.articles;
+  }
+);
+
 const searchSlice = createSlice({
   name: "search",
   initialState: {
@@ -8,33 +19,18 @@ const searchSlice = createSlice({
     status: "idle",
     error: null,
   },
-  reducers: {
-    searchPending: (state) => {
+  extraReducers: (builder) => {
+    builder.addCase(fetchSearchResults.pending, (state) => {
       state.status = "loading";
-    },
-    searchSuccess: (state, action) => {
+    });
+    builder.addCase(fetchSearchResults.fulfilled, (state, action) => {
       state.status = "succeeded";
       state.results = action.payload;
-    },
-    searchFailed: (state, action) => {
+    });
+    builder.addCase(fetchSearchResults.rejected, (state, action) => {
       state.status = "failed";
-      state.error = action.payload;
-    },
+    });
   },
 });
-
-export const fetchSearchResults = createAsyncThunk(
-  "search/fetchSearchResults",
-  async (query) => {
-    const response = await axios.get(
-      `https://newsapi.org/v2/everything?q=${query}&apiKey=${process.env.REACT_APP_API_KEY}`
-      // `https://newsapi.org/v2/everything?q=${query}&apiKey=c27b1dc48f0c4735b6cad3758ea63b36`
-    );
-    return response.data.articles;
-  }
-);
-
-export const { searchPending, searchSuccess, searchFailed } =
-  searchSlice.actions;
 
 export default searchSlice.reducer;

@@ -21,27 +21,6 @@ export const savedSlice = createSlice({
       );
       localStorage.setItem("saved", JSON.stringify(state.saved));
     },
-
-    // for serch bar
-    add: (state, action) => {
-      // if alerdey exist
-      let existsItem = state.saved?.findIndex(
-        (item) => item.title === action.payload?.title
-      );
-
-      if (existsItem >= 0) {
-        // console.log("sudah ada")
-        let removeItem = state.saved?.filter(
-          (item) => item.title !== action.payload?.title
-        );
-        state.saved = removeItem;
-        localStorage.setItem("saved", JSON.stringify(state.saved));
-      } else {
-        // add
-        state.saved.push(action.payload);
-        localStorage.setItem("saved", JSON.stringify(state.saved));
-      }
-    },
   },
 });
 

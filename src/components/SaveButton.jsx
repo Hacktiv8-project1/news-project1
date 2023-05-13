@@ -30,8 +30,8 @@ export function SaveButton ({keepNews}) {
   return <>
    {
       isSaved ? 
-      <button  onClick={()=>handleActionSave(keepNews) }  ><i className="fa-xl text-yellow-400 items-center fa-solid fa-bookmark"></i></button>:
-      <button  onClick={()=>handleActionSave(keepNews)}  ><i className="fa-xl items-center fa-regular fa-bookmark"></i></button>
+      <button className="ml-[10px] " onClick={()=>handleActionSave(keepNews) }  ><i className="fa-xl text-yellow-400 items-center fa-solid fa-bookmark"></i></button>:
+      <button className="ml-[10px]" onClick={()=>handleActionSave(keepNews)}  ><i className="fa-xl items-center fa-regular fa-bookmark"></i></button>
       
    }
 

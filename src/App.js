@@ -4,7 +4,6 @@ import { useSelector } from "react-redux";
 import HeaderComponent from "./components/HeaderComponent";
 import NewsPage from "./pages/NewsPage";
 import SavedPage from "./pages/SavedPage";
-import SearchPage from "./pages/SearchPage";
 
 function App() {
   const programNews = useSelector((store) => store.programNews.proNews);
@@ -22,10 +21,11 @@ function App() {
           element={<NewsPage setOfNews={programNews} />}
         />
         <Route path="/covid19" element={<NewsPage setOfNews={covidNews} />} />
+
         <Route path="/saved" element={<SavedPage />} />
         <Route
           path="/search/:query"
-          element={<SearchPage searchResults={searchResults} />}
+          element={<NewsPage setOfNews={searchResults} />}
         />
       </Routes>
     </BrowserRouter>

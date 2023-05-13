@@ -2,8 +2,8 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
 const PRO_URL =
-  // "https://newsapi.org/v2/everything?q=Progaming&from=2023-04-11&sortBy=popularity&apiKey=c27b1dc48f0c4735b6cad3758ea63b36";
-  `https://newsapi.org/v2/everything?q=Progaming&from=2023-04-11&sortBy=popularity&apiKey=${process.env.REACT_APP_API_KEY}`;
+  // "https://newsapi.org/v2/everything?q=Progaming&sortBy=popularity&apiKey=5af2188c4b8e4985a3fe7dbde2b3b6be";
+  `https://newsapi.org/v2/everything?q=Progaming&sortBy=popularity&apiKey=${process.env.REACT_APP_API_KEY}`;
 
 const initialState = {
   proNews: [],
