@@ -10,7 +10,7 @@ import useFetchNews from "../hooks/useFetchNews";
 function NewsPage({setOfNews}) {
 
   const [newsPagesTitle] = useFetchNews()
-  useSearchNews()
+  useSearchNews(setOfNews)
 
 // conditional rendering only when search certain news
   if (setOfNews?.status === "loading") {
@@ -38,6 +38,13 @@ function NewsPage({setOfNews}) {
       </div>
     );
   }
+  // if(setOfNews?.result === [] ){
+  //   return (
+  //     <div className="text-center min-h-[calc(100vh_-_100px)] flex justify-center items-center">
+  //       No results found.
+  //     </div>
+  //   )
+  // }
 
 
   return (

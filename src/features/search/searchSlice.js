@@ -23,12 +23,9 @@ const searchSlice = createSlice({
     builder.addCase(fetchSearchResults.pending, (state) => {
       state.status = "loading";
     });
-    builder.addCase(fetchSearchResults.fulfilled, (state, action) => {
+    builder.addCase(fetchSearchResults.fulfilled, (state, { payload }) => {
       state.status = "succeeded";
-      state.results = action.payload;
-    });
-    builder.addCase(fetchSearchResults.rejected, (state, action) => {
-      state.status = "failed";
+      state.results = payload;
     });
   },
 });
