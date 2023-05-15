@@ -6,11 +6,11 @@ import { saveNews,unSaveNews } from '../features/saved/savedSlice'
 export function SaveButton ({keepNews}) {
    const dispatch = useDispatch()
    const [isSaved,setisSaved] = useState(true)
-   const saved = useSelector((store)=>store.save.saved)
    
+   const saved = useSelector((store)=>store.save.saved)
+  
    useEffect(()=>{
       const keep = saved.findIndex((x)=>x.title === keepNews.title) 
-      
       const initialIsSaved= keep !==-1
       setisSaved(initialIsSaved)
    },[keepNews.title])
