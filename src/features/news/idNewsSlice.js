@@ -1,7 +1,9 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
-const ID_URL = `https://newsapi.org/v2/top-headlines?country=id&apiKey=${process.env.REACT_APP_API_KEY}`;
+const ID_URL =
+  // "https://newsapi.org/v2/top-headlines?country=id&apiKey=5af2188c4b8e4985a3fe7dbde2b3b6be";
+  `https://newsapi.org/v2/top-headlines?country=id&apiKey=${process.env.REACT_APP_API_KEY}`;
 
 const initialState = {
   idNews: [],
@@ -15,17 +17,13 @@ export const fetchIdNews = createAsyncThunk("idNews/fetchIdNews", async () => {
 export const idNewsSlice = createSlice({
   name: "idNews",
   initialState,
-  reducers: {},
-  extraReducers: {
-    [fetchIdNews.pending]: () => console.log("pending"),
-    [fetchIdNews.fulfilled]: (state, { payload }) => {
-      console.log("fetch successfully");
-      return { ...state, idNews: payload };
-    },
-    [fetchIdNews.rejected]: () => console.log("rejected"),
+  extraReducers: (builder) => {
+    builder.addCase(fetchIdNews.pending);
+    builder.addCase(fetchIdNews.fulfilled, (state, { payload }) => {
+      state.idNews = payload;
+    });
+    builder.addCase(fetchIdNews.rejected);
   },
 });
 
-export const { addIdNews, setSearchTerm } = idNewsSlice.actions;
-export const getAllIdNews = (state) => state.indNews.idNews;
 export default idNewsSlice.reducer;

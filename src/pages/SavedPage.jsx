@@ -1,10 +1,11 @@
-import React from "react";
-import { useDispatch, useSelector } from "react-redux";
-import TableComponent from "../components/TableComponent";
-import { getAllSaved } from "../features/saved/savedSlice";
+
+import { useSelector } from "react-redux";
+import { NewsPageButton } from "../components/NewsPageButton";
+
+
 
 function SavedPage() {
-  const saved = useSelector(getAllSaved);
+  const saved = useSelector((store)=>store.save.saved);
   return (
     <div className="md:container md:mx-auto">
       <div className="mt-10 relative overflow-x-auto shadow-md sm:rounded-lg">
@@ -42,14 +43,7 @@ function SavedPage() {
                     {item.description}
                   </td>
                   <td className="px-6 py-4 text-gray-900 dark:text-white">
-                    <div>
-                      <a
-                        href={item.url}
-                        className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                      >
-                        Read More
-                      </a>
-                    </div>
+                  <NewsPageButton url={item.url}>Read More</NewsPageButton> 
                   </td>
                 </tr>
               </>

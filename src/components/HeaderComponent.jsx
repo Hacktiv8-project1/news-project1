@@ -18,12 +18,12 @@ function HeaderComponent() {
   
   
   const [isOpen,setIsOpen]= useState(false)
-  const [viewportWidth, setViewportWidth] = useState(window.innerWidth);
+  const [viewportWidth, setViewportWidth] = useState();
 
-  useEffect(() => {
     const handleResize = () => {
       setViewportWidth(window.innerWidth);
     };
+  useEffect(() => {
     handleResize();
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);

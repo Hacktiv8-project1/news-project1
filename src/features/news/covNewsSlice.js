@@ -1,8 +1,9 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
-const COV_URL = `https://newsapi.org/v2/everything?q=Covid&from=2023-04-18&sortBy=popularity&apiKey=${process.env.REACT_APP_API_KEY}`;
-
+const COV_URL =
+  // "https://newsapi.org/v2/everything?q=Covid&sortBy=popularity&apiKey=5af2188c4b8e4985a3fe7dbde2b3b6be";
+  `https://newsapi.org/v2/everything?q=Covid&sortBy=popularity&apiKey=${process.env.REACT_APP_API_KEY}`;
 const initialState = {
   covNews: [],
 };
@@ -18,17 +19,13 @@ export const fetchCovNews = createAsyncThunk(
 export const covNewsSlice = createSlice({
   name: "covNews",
   initialState,
-  reducers: {},
-  extraReducers: {
-    [fetchCovNews.pending]: () => console.log("pending"),
-    [fetchCovNews.fulfilled]: (state, { payload }) => {
-      console.log("fetch successfully");
-      return { ...state, covNews: payload };
-    },
-    [fetchCovNews.rejected]: () => console.log("rejected"),
+  extraReducers: (builder) => {
+    builder.addCase(fetchCovNews.pending);
+    builder.addCase(fetchCovNews.fulfilled, (state, { payload }) => {
+      state.covNews = payload;
+    });
+    builder.addCase(fetchCovNews.rejected);
   },
 });
 
-// export const { addCovNews } = covNewsSlice.actions;
-export const getAllCovNews = (state) => state.covidNews.covNews;
 export default covNewsSlice.reducer;
